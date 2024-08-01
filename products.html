@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoCart</title>
+    <style>
+body { font-family: calibri, Arial, sans-serif; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #343a40;
+            padding: 10px;
+        }
+        .navbar-brand, .nav-link {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 15px;
+        }
+        .navbar-brand:hover, .nav-link:hover {
+            color: #ccc;
+        }
+        .container {
+            margin: 30px auto;
+            width: 80%;
+        }
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+        }
+        .category-container {
+            position: relative;
+            display: inline-block;
+            background-color: #ffffff;
+            color: #000;
+            border: none;
+            padding: 30px 60px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            width: 40%;
+            text-align: center;
+        }
+        .category-container:hover {
+            background-color: #ddd;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 300px;
+            max-width: 100%;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 20px;
+            border-radius: 5px;
+            color: black;
+            top: 100%;
+        }
+        .category-container:hover .dropdown-content {
+            display: block;
+        }
+        .product-info {
+            display: flex;
+            align-items: center;
+        }
+        .product-image {
+            max-width: 120px;
+            margin-right: 15px;
+        }
+        .product-description {
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="home.html">CryptoCart</a>
+            <div>
+                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="#">Features</a>
+                <a class="nav-link" href="#">Pricing</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>DISCOVER PRODUCTS</h2>
+        <div class="button-group">
+            <div class="category-container" onclick="navigateToProductDescription()">
+                Electronics
+                <div class="dropdown-content">
+                    <div class="product-info">
+                        <img src="images/razermouse.jpg" alt="Best-selling Electronics" class="product-image">
+                        <div class="product-description">
+                            <h4>Razer Mouse</h4>
+                            <p>Razer's latest mouse! Click to see more!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="category-container">
+                Video Games
+                <div class="dropdown-content">
+                    <div class="product-info">
+                        <img src="images/eldenring.jpg" alt="Best-selling Video Games" class="product-image">
+                        <div class="product-description">
+                            <h4>Elden Ring</h4>
+                            <p>Best Hit Game of the month! Click to see more!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="category-container">
+                Beauty
+                <div class="dropdown-content">
+                    <div class="product-info">
+                        <img src="images/innisfree.jpeg" alt="Best-selling Beauty" class="product-image">
+                        <div class="product-description">
+                            <h4>Innis Free Lipstick</h4>
+                            <p>Innis Free's latest and bestselling. Click to see more!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="category-container">
+                Outdoor
+                <div class="dropdown-content">
+                    <div class="product-info">
+                        <img src="images/salomon.jpg" alt="Best-selling Outdoor" class="product-image">
+                        <div class="product-description">
+                            <h4>Salomon shoes</h4>
+                            <p>View the best selling outdoor product now! Click to see more!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="category-container">
+                Clothing
+                <div class="dropdown-content">
+                    <div class="product-info">
+                        <img src="images/stussy.jpeg" alt="Best-selling Clothing" class="product-image">
+                        <div class="product-description">
+                            <h4>Stussy Shirt</h4>
+                            <p>Hot and trending right now! Click to see more!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="category-container">
+                Jewelry
+                <div class="dropdown-content">
+                    <div class="product-info">
+                        <img src="images/jewelry.jpg" alt="Best-selling Jewelry" class="product-image">
+                        <div class="product-description">
+                            <h4>Bejewlled Necklace</h4>
+                            <p>Shiny and new. See the best selling jewelries now!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function navigateToProductDescription() {
+            window.location.href = 'productdescription.html';
+        }
+    </script>
+</body>
+</html>
