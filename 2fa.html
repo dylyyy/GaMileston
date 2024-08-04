@@ -61,6 +61,14 @@
             max-width: 200px;
             margin-top: 20px;
         }
+        .notification {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #28a745;
+            color: #fff;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -105,6 +113,9 @@
             <img src="images/singpass.jpg" alt="Singpass QR Code" class="qr-code">
             <button class="btn-toggle" onclick="toggleView()">Go back to OTP</button>
         </div>
+        <div id="notification" class="notification">
+            2FA confirmed! You will be redirected to the products page to continue shopping.
+        </div>
     </div>
 
     <script>
@@ -124,8 +135,10 @@
         function submitOTP() {
             var otp = document.getElementById('otp').value;
             if (otp === "123456") {
-                alert("OTP Verified! Proceeding to account.");
-                window.location.href = 'products.html';
+                document.getElementById('notification').style.display = 'block';
+                setTimeout(() => {
+                    window.location.href = 'products.html';
+                }, 3000);
             } else {
                 alert("Invalid OTP. Please try again.");
             }
