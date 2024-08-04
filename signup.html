@@ -3,48 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CryptoCart - Sign Up</title>
+    <title>CryptoCart Sign Up</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { font-family: calibri, Arial, sans-serif; }
         body {
-            font-family: Arial, sans-serif;
-            background-color: #007bff;
-            color: #fff;
-            text-align: center;
             margin: 0;
-            padding: 0;
+            font-family: Arial, sans-serif;
         }
-        .navbar {
-            background-color: #343a40;
-            padding: 10px;
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #007bff;
+            color: #ffffff;
+            height: 100vh;
         }
-        .navbar-brand, .nav-link {
-            color: #fff !important;
+
+        .content {
+            display: flex;
+            width: 80%;
+            max-width: 1200px;
+            margin-top: 40px;
         }
-        .navbar-brand:hover, .nav-link:hover {
-            color: #ccc !important;
+
+        .left {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .container {
-            margin: 30px auto;
-            width: 50%;
-            background-color: #fff;
-            color: #000;
-            padding: 20px;
+
+        .left img {
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .right {
+            flex: 1;
+            background-color: #f0f0f0;
             border-radius: 10px;
+            padding: 20px;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .form-group {
-            margin-bottom: 15px;
+
+        .signup-box {
+            width: 100%;
+            max-width: 400px;
         }
-        .btn-signup {
-            padding: 10px 20px;
+
+        .signup-box h2 {
+            text-align: center;
+        }
+
+        .signup-box label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .signup-box input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-toggle {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .qr-code {
+            width: 100%;
+            max-width: 200px;
+            margin-top: 20px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
             background-color: #28a745;
             color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            margin-top: 20px;
-            width: 100%;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
         }
     </style>
 </head>
@@ -72,42 +138,78 @@
         </div>
     </nav>
 
-    <div class="container">
-        <h1>Sign Up</h1>
-        <form>
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" class="form-control" placeholder="Enter Username">
+    <div class="notification" id="notification">You have successfully signed up and are now logged in!</div>
+
+    <div class="main-container">
+        <div class="content">
+            <div class="left">
+                <img src="images/cryptocart.png" alt="World Shopping Cart">
             </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" class="form-control" placeholder="Enter Email">
+            <div class="right">
+                <div class="signup-box" id="signup-box">
+                    <h2>Sign Up</h2>
+                    <form id="signup-form" onsubmit="handleFormSubmit(event)">
+                        <label for="name">NAME:</label>
+                        <input type="text" id="name" name="name" required>
+                        
+                        <label for="email">EMAIL:</label>
+                        <input type="email" id="email" name="email" required>
+                        
+                        <label for="phone">PHONE NUMBER:</label>
+                        <input type="tel" id="phone" name="phone" required>
+                        
+                        <button type="submit" class="btn-submit">Submit</button>
+                    </form>
+                    <p>or</p>
+                    <button class="btn-toggle" onclick="toggleView()">Use QR Code</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" class="form-control" placeholder="Enter Password">
-            </div>
-            <button type="button" class="btn-signup" onclick="signup()">Sign Up</button>
-        </form>
+        </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        function signup() {
-            var username = document.getElementById('username').value;
-            var email = document.getElementById('email').value;
-            var password = document.getElementById('password').value;
-            if (username && email && password) {
-                alert("Sign Up successful!");
-                window.location.href = "login.html";
+        function toggleView() {
+            const signupBox = document.getElementById('signup-box');
+
+            if (signupBox.innerHTML.includes('Sign Up')) {
+                signupBox.innerHTML = `
+                    <h2>Scan with Singpass app to log in</h2>
+                    <img src="images/singpass.jpg" alt="Singpass QR Code" class="qr-code">
+                    <button class="btn-toggle" onclick="toggleView()">Go back to Form</button>
+                `;
             } else {
-                alert("Please fill in all fields.");
+                signupBox.innerHTML = `
+                    <h2>Sign Up</h2>
+                    <form id="signup-form" onsubmit="handleFormSubmit(event)">
+                        <label for="name">NAME:</label>
+                        <input type="text" id="name" name="name" required>
+                        
+                        <label for="email">EMAIL:</label>
+                        <input type="email" id="email" name="email" required>
+                        
+                        <label for="phone">PHONE NUMBER:</label>
+                        <input type="tel" id="phone" name="phone" required>
+                        
+                        <button type="submit" class="btn-submit">Submit</button>
+                    </form>
+                    <p>or</p>
+                    <button class="btn-toggle" onclick="toggleView()">Use QR Code</button>
+                `;
+            }
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+
+            if (email) {
+                alert('You have successfully signed up and are now logged in!');
+                window.location.href = 'products.html'; 
             }
         }
     </script>
-
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
