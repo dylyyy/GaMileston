@@ -46,6 +46,21 @@
             margin-top: 20px;
             width: 100%;
         }
+        .btn-toggle {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .qr-code {
+            width: 100%;
+            max-width: 200px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -74,16 +89,38 @@
 
     <div class="container">
         <h1>Two-Factor Authentication</h1>
-        <form>
-            <div class="form-group">
-                <label for="otp">OTP:</label>
-                <input type="text" id="otp" class="form-control" placeholder="Enter OTP">
-            </div>
-            <button type="button" class="btn-submit" onclick="submitOTP()">Submit</button>
-        </form>
+        <div id="otp-box">
+            <form>
+                <div class="form-group">
+                    <label for="otp">OTP:</label>
+                    <input type="text" id="otp" class="form-control" placeholder="Enter OTP">
+                </div>
+                <button type="button" class="btn-submit" onclick="submitOTP()">Submit</button>
+            </form>
+            <p>or</p>
+            <button class="btn-toggle" onclick="toggleView()">Use QR Code</button>
+        </div>
+        <div id="qr-box" style="display:none;">
+            <h2>Scan with Singpass app to verify</h2>
+            <img src="images/singpass.jpg" alt="Singpass QR Code" class="qr-code">
+            <button class="btn-toggle" onclick="toggleView()">Go back to OTP</button>
+        </div>
     </div>
 
     <script>
+        function toggleView() {
+            const otpBox = document.getElementById('otp-box');
+            const qrBox = document.getElementById('qr-box');
+
+            if (otpBox.style.display === "none") {
+                otpBox.style.display = "block";
+                qrBox.style.display = "none";
+            } else {
+                otpBox.style.display = "none";
+                qrBox.style.display = "block";
+            }
+        }
+
         function submitOTP() {
             var otp = document.getElementById('otp').value;
             if (otp === "123456") {
@@ -95,7 +132,6 @@
         }
     </script>
 
-    <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
