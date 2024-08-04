@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crypto Cart - Your Cart</title>
-    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-body { font-family: calibri, Arial, sans-serif; }
+        body { font-family: calibri, Arial, sans-serif; }
         body {
             font-family: Arial, sans-serif;
         }
@@ -73,10 +72,9 @@ body { font-family: calibri, Arial, sans-serif; }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="home.html">CryptoCart</a>
+            <a class="navbar-brand" href="index.html">CryptoCart</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -111,17 +109,6 @@ body { font-family: calibri, Arial, sans-serif; }
             <span>Total Price</span>
             <span>Actions</span>
         </div>
-        <div class="cart-item" id="cartItem1">
-            <input type="checkbox" class="checkbox" onchange="updateSubtotal()" id="checkbox1">
-            <span>
-                <img src="images/razermouse.jpg" alt="Razer Mouse">
-                <p>Razer Mouse with 2 year warranty</p>
-            </span>
-            <span>$60 - $80 (0.00064 BTC - 0.00085 BTC)</span>
-            <span>1</span>
-            <span>$60.00 (0.00064 BTC)</span>
-            <span class="btn-delete" onclick="removeItem('cartItem1')">DELETE</span>
-        </div>
         <div class="cart-footer">
             <input type="checkbox" class="checkbox" onchange="selectAll(this)" id="selectAll">
             <span>Select All</span>
@@ -139,7 +126,6 @@ body { font-family: calibri, Arial, sans-serif; }
         </div>
     </div>
 
-    <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -193,11 +179,28 @@ body { font-family: calibri, Arial, sans-serif; }
             }
         }
 
-        // Initialize the cart items from localStorage
         function initializeCart() {
             var cart = JSON.parse(localStorage.getItem('cart')) || [];
             var cartContainer = document.querySelector('.container');
+            var cartFooter = document.querySelector('.cart-footer');
+            cartContainer.innerHTML = `
+                <h1>Your Cart</h1>
+                <div class="cart-header">
+                    <span>Select</span>
+                    <span>Product</span>
+                    <span>Unit Price</span>
+                    <span>Quantity</span>
+                    <span>Total Price</span>
+                    <span>Actions</span>
+                </div>
+            `;
+
             cart.forEach(function(item, index) {
+                var price = parseFloat(item.price.replace('$', ''));
+                var btcPrice = parseFloat(item.price.match(/\((.*?) BTC\)/)[1]);
+                var totalPrice = (price * item.quantity).toFixed(2);
+                var totalBTCPrice = (btcPrice * item.quantity).toFixed(5);
+
                 var cartItem = document.createElement('div');
                 cartItem.classList.add('cart-item');
                 cartItem.id = 'cartItem' + (index + 1);
@@ -209,11 +212,13 @@ body { font-family: calibri, Arial, sans-serif; }
                     </span>
                     <span>${item.price}</span>
                     <span>${item.quantity}</span>
-                    <span>${(parseFloat(item.price.replace('$', '').split(' ')[0]) * item.quantity).toFixed(2)} (0.000${(parseFloat(item.price.match(/\((.*?) BTC\)/)[1]) * item.quantity).toFixed(5)} BTC)</span>
+                    <span>$${totalPrice} (${totalBTCPrice} BTC)</span>
                     <span class="btn-delete" onclick="removeItem('cartItem${index + 1}')">DELETE</span>
                 `;
-                cartContainer.insertBefore(cartItem, cartContainer.querySelector('.cart-footer'));
+                cartContainer.insertBefore(cartItem, cartFooter);
             });
+
+            cartContainer.appendChild(cartFooter);
             updateSubtotal();
         }
 
